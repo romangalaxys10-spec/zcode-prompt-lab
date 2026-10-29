@@ -1,0 +1,8 @@
+{
+  "name": "prompt-lab",
+  "version": "0.1.0",
+  "description": "A/B harness for prompts and skills: define a fixture set and a weighted rubric, run variant A and variant B against the same fixtures with fresh subagents (no cross-contamination), auto-score the objective criteria, hand the LLM-judged criteria to the agent, and produce a comparison table plus a verdict naming the diff that mattered.",
+  "author": { "name": "Roman's zcode agent" },
+  "skills": "./skills",
+  "commands": "./commands"
+}
