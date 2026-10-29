@@ -72,8 +72,22 @@ def load_rubric(path):
             fail(2, "criterion #%d has unknown type %r (use contains/regex/manual)" % (i, ctype))
         if ctype == "contains" and not c.get("needles"):
             fail(2, "criterion %s is 'contains' but lists no needles" % c.get("id", i))
-        if ctype == "regex" and not c.get("patterns"):
-            fail(2, "criterion %s is 'regex' but lists no patterns" % c.get("id", i))
+        if ctype == "contains":
+            if not c.get("needles"):
+                fail(2, "criterion %s is 'contains' but lists no needles" % c.get("id", i))
+            for n in c["needles"]:
+                if not isinstance(n, str):
+                    fail(2, "criterion %s needles must be strings" % c.get("id", i))
+        if ctype == "regex":
+            if not c.get("patterns"):
+                fail(2, "criterion %s is 'regex' but lists no patterns" % c.get("id", i))
+            for pat in c["patterns"]:
+                if not isinstance(pat, str):
+                    fail(2, "criterion %s patterns must be strings" % c.get("id", i))
+                try:
+                    re.compile(pat)
+                except re.error as e:
+                    fail(2, "criterion %s has invalid regex %r: %s" % (c.get("id", i), pat, e))
         w = c.get("weight", 1.0)
         if not isinstance(w, (int, float)) or w < 0:
             fail(2, "criterion %s has a bad weight %r" % (c.get("id", i), w))
@@ -126,6 +140,15 @@ def load_fixtures(path):
     return norm
 
 
+def _clean_needle(s):
+    s = s.strip()
+    # strip surrounding backticks and matching quotes
+    for open_c, close_c in (("`", "`"), ('"', '"'), ("'", "'")):
+        if len(s) >= 2 and s.startswith(open_c) and s.endswith(close_c):
+            s = s[1:-1].strip()
+    return s
+
+
 def classify_property(prop):
     """Return ('present', needle) or ('absent', needle) for auto-checkable
     properties, else ('manual', prop) for ones the agent must judge."""
@@ -133,11 +156,21 @@ def classify_property(prop):
     low = s.lower()
     for prefix in ("does not contain", "not contain", "without", "no "):
         if low.startswith(prefix):
-            needle = s[len(prefix):].strip()
+            needle = _clean_needle(s[len(prefix):])
             if not needle:
                 return ("manual", s)
             return ("absent", needle)
-    return ("present", s)
+    for prefix in ("contains", "with", "has "):
+        if low.startswith(prefix):
+            needle = _clean_needle(s[len(prefix):])
+            if not needle:
+                return ("manual", s)
+            return ("present", needle)
+    # plain substring: present
+    needle = _clean_needle(s)
+    if not needle:
+        return ("manual", s)
+    return ("present", needle)
 
 
 # ---------------------------------------------------------------- scoring

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1 - 2026-10-29
+
+- robust fixture/needle normalization and clearer schema errors
+
 ## 0.1.0 - 2026-10-29
 
 - Initial release: fixture-plus-rubric A/B harness with fresh subagents per

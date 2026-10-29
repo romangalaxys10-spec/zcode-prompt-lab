@@ -4,7 +4,7 @@
     {
       "name": "prompt-lab",
       "source": "./",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "description": "A/B harness for prompts and skills: a fixture set, a weighted rubric, and variant A vs variant B run on the same fixtures by fresh subagents with no cross-contamination. Objective criteria (contains, regex, substring-form expected properties) auto-score deterministically; manual criteria are flagged for the agent and reported as pending so the verdict never hides partial data.",
       "displayName": "Prompt Lab",
       "category": "developer-tools"
