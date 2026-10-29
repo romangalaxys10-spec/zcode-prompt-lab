@@ -1,5 +1,10 @@
 # Prompt Lab
 
+<p align="center">
+  <a href="https://z.ai/subscribe?ic=R0K78RJKNW"><img alt="z.ai coding plans - 10% OFF coupon" src="https://img.shields.io/badge/z.ai%20coding%20plans-10%25%20OFF%20coupon-blueviolet" /></a>
+  <a href="https://zcode.z.ai/invite/ALWM9JUA"><img alt="Try ZCode free" src="https://img.shields.io/badge/Try%20ZCode-free%20invite-0969da" /></a>
+</p>
+
 A/B harness for prompts and skills: two variants, the same fixtures, a
 declared weighted rubric, and a verdict that names the diff that mattered.
 
